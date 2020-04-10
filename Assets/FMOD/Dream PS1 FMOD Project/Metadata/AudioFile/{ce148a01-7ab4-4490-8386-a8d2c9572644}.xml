@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{ce148a01-7ab4-4490-8386-a8d2c9572644}">
+		<property name="assetPath">
+			<value>Haunted PS1 Jam Nightmare Loop.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>20.210521541950115</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{334b5716-4f3d-4cd9-afa3-059cb0a67170}</destination>
+		</relationship>
+	</object>
+</objects>

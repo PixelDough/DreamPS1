@@ -24,8 +24,6 @@ public class CircleBorder : MonoBehaviour
     private void LateUpdate()
     {
 
-        if (cam == null) { cam = FindObjectOfType<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject; }
-
         float dist = Vector3.Distance(playerController.transform.position, transform.position);
         
         if (dist < innerRadius)
@@ -37,6 +35,8 @@ public class CircleBorder : MonoBehaviour
         
         if (dist > outerRadius)
         {
+            if (cam == null) { cam = FindObjectOfType<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject; }
+
             currentFadeNormalized = 1;
             Vector3 pos = new Vector3(playerController.transform.position.x, 0f, playerController.transform.position.z);
             Vector3.ClampMagnitude(pos, outerRadius - 1);

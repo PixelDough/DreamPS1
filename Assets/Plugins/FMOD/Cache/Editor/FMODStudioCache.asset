@@ -1,5 +1,105 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7364687245075976573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220661411135928
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &-5479722860103936293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220517885566512
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &-4540599330768536920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MUSIC/music_soap
+  m_EditorClassIdentifier: 
+  Path: event:/MUSIC/music_soap
+  guid: caadddf066e6ae43b328bab2855bddbb
+  Banks:
+  - {fileID: 3794330035540342995}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 10105
+--- !u!114 &-4308570503449417380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MUSIC/music_fear
+  m_EditorClassIdentifier: 
+  Path: event:/MUSIC/music_fear
+  guid: 15900b4df92fa4429309c08e5dbde126
+  Banks:
+  - {fileID: 3794330035540342995}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 20210
+--- !u!114 &-3014734175531409585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220793691395853
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
 --- !u!114 &-2257940095941572084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,12 +114,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637220479529561657
+  lastModified: 637220800352084069
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 688
+    Value: 898
   Exists: 1
+--- !u!114 &-1354637861998320106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220526363460436
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34,15 +152,91 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -2257940095941572084}
-  - {fileID: 5181826171451489755}
-  EditorEvents: []
+  - {fileID: 3794330035540342995}
+  EditorEvents:
+  - {fileID: 6208474917120680126}
+  - {fileID: -4308570503449417380}
+  - {fileID: -4540599330768536920}
+  - {fileID: 5329900308371719686}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 5181826171451489755}
+  - {fileID: 3794330035540342995}
   StringsBanks:
   - {fileID: -2257940095941572084}
-  stringsBankWriteTime: 637220479529561657
+  stringsBankWriteTime: 637220800352084069
   cacheVersion: 3
+--- !u!114 &98884070498588981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220518108081331
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &407191086944886513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220515302863722
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &1216878201635655177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220517323853245
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
+--- !u!114 &3794330035540342995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220800352064126
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &5181826171451489755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,4 +254,68 @@ MonoBehaviour:
   lastModified: 637220479529541711
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
+--- !u!114 &5329900308371719686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/FOOTSTEPS/sfx_footstep_base
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/FOOTSTEPS/sfx_footstep_base
+  guid: 194e20ce7883fa4099819f9ac721a218
+  Banks:
+  - {fileID: 3794330035540342995}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 75
+--- !u!114 &6208474917120680126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MUSIC/music_dream
+  m_EditorClassIdentifier: 
+  Path: event:/MUSIC/music_dream
+  guid: 6d0b093172ce6b4e9b1416b22691ce57
+  Banks:
+  - {fileID: 3794330035540342995}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 15157
+--- !u!114 &8659677492502563644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Dream PS1 FMOD Project/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637220517535472009
+  LoadResult: 0
+  FileSizes: []
+  Exists: 0
