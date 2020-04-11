@@ -272,7 +272,7 @@ MonoBehaviour:
       - LayerList:
         - CurrentOriginalValue:
             valueInternal: -6.91
-          newKeyListSerialized: 02000000000000000000b81eddc00000000000000000abaaaa3eabaaaa3e00000000003c00000000b81eddc00000000000000000abaaaa3eabaaaa3e00000000
+          newKeyListSerialized: 00000000
       - LayerList:
         - CurrentOriginalValue:
             valueInternal: -6.91
@@ -290,7 +290,7 @@ MonoBehaviour:
       - LayerList:
         - CurrentOriginalValue:
             valueInternal: 0
-          newKeyListSerialized: 02000000000000000000000000000000000000000000abaaaa3eabaaaa3e00000000003c00000000000000000000000000000000abaaaa3eabaaaa3e00000000
+          newKeyListSerialized: 00000000
       - LayerList:
         - CurrentOriginalValue:
             valueInternal: 0
@@ -307,8 +307,8 @@ MonoBehaviour:
           newKeyListSerialized: 00000000
       - LayerList:
         - CurrentOriginalValue:
-            valueInternal: -1.78
-          newKeyListSerialized: 020000000000000000000ad7e3bf8b6c273e8b6c273eabaaaa3eabaaaa3e00000000003c00000000e17a00418b6c273e8b6c273eabaaaa3eabaaaa3e00000000
+            valueInternal: 8.03
+          newKeyListSerialized: 00000000
       - LayerList:
         - CurrentOriginalValue:
             valueInternal: 8.03
@@ -2994,4 +2994,22 @@ MonoBehaviour:
         valueInternal: 0
       StopReturnToStart:
         valueInternal: 1
-    EventList: []
+    EventList:
+    - Frame:
+        valueInternal: 40
+      EventFunctionList:
+      - FuncName:
+          valueInternal: StartParticles
+        ParamType:
+          valueInternal: 0
+        ParamValue:
+          valueInternal: 
+    - Frame:
+        valueInternal: 0
+      EventFunctionList:
+      - FuncName:
+          valueInternal: StopParticles
+        ParamType:
+          valueInternal: 0
+        ParamValue:
+          valueInternal: 

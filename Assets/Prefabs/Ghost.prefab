@@ -4852,6 +4852,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d9f7b3c88855814caf52545de01e500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moanSound: event:/SFX/GHOST/sfx_ghost_moan
+  floatSound: event:/SFX/GHOST/sfx_ghost_float
 --- !u!1 &5248818279479437346
 GameObject:
   m_ObjectHideFlags: 0

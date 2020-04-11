@@ -8,6 +8,12 @@ using UnityEngine.AI;
 public class GhostController : MonoBehaviour
 {
 
+    [FMODUnity.EventRef]
+    public string moanSound;
+
+    [FMODUnity.EventRef]
+    public string floatSound;
+
     NavMeshAgent agent;
     Animator animator;
 
@@ -20,13 +26,17 @@ public class GhostController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        animator.speed = 0;
+        //animator.speed = 0;
+        StopParticles();
+
+        FMODUnity.RuntimeManager.PlayOneShotAttached(floatSound, gameObject);
+        //moanEvent = FMODUnity.RuntimeManager.CreateInstance(moanSound);
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) animator.speed = 1;
+        //if (Input.GetKeyDown(KeyCode.Space)) animator.speed = 1;
 
         if (!chasingPlayer)
         {
@@ -37,6 +47,9 @@ public class GhostController : MonoBehaviour
                     playerSeen = true;
                     animator.SetTrigger("PlaySighted");
                     Invoke("StartChase", 1f);
+
+                    FMODUnity.RuntimeManager.PlayOneShotAttached(moanSound, gameObject);
+                    //moanEvent.start();
                 }
             }
         }

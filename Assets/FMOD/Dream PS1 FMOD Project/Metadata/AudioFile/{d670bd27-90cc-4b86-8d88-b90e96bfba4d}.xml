@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{d670bd27-90cc-4b86-8d88-b90e96bfba4d}">
+		<property name="assetPath">
+			<value>Haunted PS1 Bedroom Day Loop.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.0526303854875287</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{334b5716-4f3d-4cd9-afa3-059cb0a67170}</destination>
+		</relationship>
+	</object>
+</objects>

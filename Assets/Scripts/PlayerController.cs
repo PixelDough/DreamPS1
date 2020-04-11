@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     public GameObject model;
     public Animator animator;
 
+    [FMODUnity.EventRef]
+    public string footstepSoundEvent;
+
     private CharacterController cc;
     private Player p;
 
@@ -54,6 +57,14 @@ public class PlayerController : MonoBehaviour
         Vector3 move = transform.forward * currentSpeedWalk * 5f;
         move += Physics.gravity;
         cc.Move(move * Time.deltaTime);
+    }
+
+    
+    public void PlayStepSound()
+    {
+
+        FMODUnity.RuntimeManager.PlayOneShotAttached(footstepSoundEvent, gameObject);
+
     }
 
 }
