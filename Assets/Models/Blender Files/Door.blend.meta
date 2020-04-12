@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Mat_Door
     second: {fileID: 2100000, guid: 5eb7b93f83d064b4d87a6624b090c453, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mat_DoorGlow
+    second: {fileID: 2100000, guid: 6321115ae6e9fad418c60a78d1bccb11, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

@@ -14,12 +14,13 @@ public class GhostController : MonoBehaviour
     [FMODUnity.EventRef]
     public string floatSound;
 
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
+    public Vector3 vectorToPlayer = Vector3.zero;
     Animator animator;
 
-
-    bool playerSeen = false;
-    bool chasingPlayer = false;
+    PlayerController player;
+    public bool playerSeen = false;
+    public bool chasingPlayer = false;
 
 
     private void Start()
@@ -29,7 +30,11 @@ public class GhostController : MonoBehaviour
         //animator.speed = 0;
         StopParticles();
 
-        FMODUnity.RuntimeManager.PlayOneShotAttached(floatSound, gameObject);
+        player = FindObjectOfType<PlayerController>();
+
+        StartCoroutine(Wander());
+
+        //FMODUnity.RuntimeManager.PlayOneShotAttached(floatSound, gameObject);
         //moanEvent = FMODUnity.RuntimeManager.CreateInstance(moanSound);
     }
 
@@ -42,8 +47,9 @@ public class GhostController : MonoBehaviour
         {
             if (!playerSeen)
             {
-                if (Vector3.Distance(transform.position, FindObjectOfType<PlayerController>().transform.position) < 5f)
+                if (Vector3.Distance(transform.position, player.transform.position) < 5f)
                 {
+                    agent.isStopped = true;
                     playerSeen = true;
                     animator.SetTrigger("PlaySighted");
                     Invoke("StartChase", 1f);
@@ -55,14 +61,33 @@ public class GhostController : MonoBehaviour
         }
         else
         {
-            agent.SetDestination(FindObjectOfType<PlayerController>().transform.position);
+            agent.SetDestination(player.transform.position);
+            vectorToPlayer = transform.position - player.transform.position;
         }
     }
 
 
     private void StartChase()
     {
+        agent.isStopped = false;
         chasingPlayer = true;
+    }
+
+
+    private IEnumerator Wander()
+    {
+
+        yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+        Vector3 posChange = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
+        agent.SetDestination(transform.position + posChange);
+
+        if (!playerSeen && !chasingPlayer)
+        {
+            StartCoroutine(Wander());
+        }
+
+        yield return null;
     }
 
 

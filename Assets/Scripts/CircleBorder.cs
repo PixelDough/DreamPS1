@@ -8,51 +8,82 @@ public class CircleBorder : MonoBehaviour
 
     public float innerRadius = 50f;
     public float outerRadius = 100f;
-    public Image fadePanel;
+    
+    private Image fadePanel;
 
     private PlayerController playerController;
     private float currentFadeNormalized = 0;
     private GameObject cam;
+    private List<GhostController> ghosts;
 
+    private bool isTeleporting = false;
 
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        fadePanel = GameObject.FindGameObjectWithTag("FadeOverlay").gameObject.GetComponent<Image>();
+        ghosts = new List<GhostController>(FindObjectsOfType<GhostController>());
+
+
     }
 
 
     private void LateUpdate()
     {
 
+        //canFadeTime = Mathf.Max(canFadeTime - Time.deltaTime, 0f);
+
         float dist = Vector3.Distance(playerController.transform.position, transform.position);
-        
-        if (dist < innerRadius)
+
+        if (dist > outerRadius && !isTeleporting)
         {
-            currentFadeNormalized = 0;
+            StartCoroutine(Teleport());
         }
 
-        if (dist >= innerRadius && dist <= outerRadius) currentFadeNormalized = ((dist - innerRadius) / (outerRadius - innerRadius));
-        
-        if (dist > outerRadius)
-        {
-            if (cam == null) { cam = FindObjectOfType<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject; }
+        //Color c = fadePanel.color;
+        //c.a = currentFadeNormalized;
+        //fadePanel.color = c;
 
-            currentFadeNormalized = 1;
-            Vector3 pos = new Vector3(playerController.transform.position.x, 0f, playerController.transform.position.z);
-            Vector3.ClampMagnitude(pos, outerRadius - 1);
-            playerController.transform.position = -pos;
+    }
 
-            cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().OnTargetObjectWarped(transform, -(pos * 2));
-            cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().PreviousStateIsValid = false;
 
-            //cam.SetActive(false);
-            //cam.SetActive(true);
-        }
+    private IEnumerator Teleport()
+    {
+        isTeleporting = true;
 
-        Color c = fadePanel.color;
-        c.a = currentFadeNormalized;
-        fadePanel.color = c;
+        LTDescr tween = LeanTween.alpha(fadePanel.rectTransform, 1, 1f);
+        while (LeanTween.isTweening(tween.id)) yield return null;
 
+        // Teleport player
+        Vector3 pos = new Vector3(playerController.transform.position.x, 0f, playerController.transform.position.z);
+        float bigDist = Vector3.Distance(transform.position, playerController.transform.position);
+        bigDist = Mathf.Clamp(bigDist, 0, outerRadius - 5);
+        pos = pos.normalized;
+
+        playerController.transform.position = -pos * bigDist;
+
+        //// Teleport ghosts
+        //foreach (GhostController ghost in ghosts)
+        //{
+        //    if (ghost.playerSeen || ghost.chasingPlayer)
+        //    {
+        //        ghost.agent.Warp(-pos + ghost.vectorToPlayer);
+        //    }
+        //}
+
+        if (cam == null) { cam = FindObjectOfType<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject; }
+        //cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().OnTargetObjectWarped(transform, -(pos * 2));
+        cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().PreviousStateIsValid = false;
+
+        cam.SetActive(false);
+        yield return new WaitForEndOfFrame();
+        cam.SetActive(true);
+
+        tween = LeanTween.alpha(fadePanel.rectTransform, 0, 1f);
+        while (LeanTween.isTweening(tween.id)) yield return null;
+
+        isTeleporting = false;
+        yield return null;
     }
 
 

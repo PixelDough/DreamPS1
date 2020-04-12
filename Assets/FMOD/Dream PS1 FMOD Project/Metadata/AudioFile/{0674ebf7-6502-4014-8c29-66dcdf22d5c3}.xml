@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{0674ebf7-6502-4014-8c29-66dcdf22d5c3}">
+		<property name="assetPath">
+			<value>HPS1- Door Lock 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.73854875283446708</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{334b5716-4f3d-4cd9-afa3-059cb0a67170}</destination>
+		</relationship>
+	</object>
+</objects>

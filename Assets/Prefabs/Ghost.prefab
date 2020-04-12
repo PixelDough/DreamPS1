@@ -4775,6 +4775,7 @@ GameObject:
   - component: {fileID: 549880260149539411}
   - component: {fileID: 2183645853873489194}
   - component: {fileID: 2967464811484969187}
+  - component: {fileID: 5938540513228600539}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -4854,6 +4855,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moanSound: event:/SFX/GHOST/sfx_ghost_moan
   floatSound: event:/SFX/GHOST/sfx_ghost_float
+  agent: {fileID: 0}
+  vectorToPlayer: {x: 0, y: 0, z: 0}
+  playerSeen: 0
+  chasingPlayer: 0
+--- !u!114 &5938540513228600539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248818279112187357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/SFX/GHOST/sfx_ghost_float
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 3
+  OverrideMaxDistance: 20
 --- !u!1 &5248818279479437346
 GameObject:
   m_ObjectHideFlags: 0

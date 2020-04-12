@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 338ef1755bd9a48448d9e2dfaa79f8e7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sceneChangePrefab: {fileID: 2366927958307387276, guid: 9f9e7a63988d11f4d9f0b027319110a9,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
