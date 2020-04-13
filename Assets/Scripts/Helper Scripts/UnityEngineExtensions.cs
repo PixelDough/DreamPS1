@@ -12,4 +12,9 @@ static public class UnityEngineExtensions
     {
         return gameObject.GetComponent<T>() ?? gameObject.AddComponent<T>();
     }
+
+    static public Vector3 XZPlane(this Vector3 vec)
+    {
+        return new Vector3(vec.x, 0, vec.z);
+    }
 }

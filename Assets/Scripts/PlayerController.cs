@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
 
     public GameObject model;
     public Animator animator;
+    public float screamTimerTimeRemainingTarget = 5;
+    public float screamTimerTimeMax = 5;
+    public DeathScreamController deathCam;
 
     [FMODUnity.EventRef]
     public string footstepSoundEvent;
@@ -16,10 +21,14 @@ public class PlayerController : MonoBehaviour
     private CharacterController cc;
     private Player p;
 
+    private Vector3 sceneStartPosition;
+
     private float currentSpeedWalk = 0f;
     private float currentSpeedTurn = 0f;
 
     private Image thoughtBubble;
+    private RectTransform screamTimer;
+    private Image screamTimerMask;
 
     private RectTransform mainUI;
 
@@ -45,53 +54,90 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        
+        sceneStartPosition = transform.position;
+
         p = ReInput.players.GetPlayer(0);
 
         thoughtBubble = GameObject.FindGameObjectWithTag("ThoughtBubble").GetComponent<Image>();
+
+        screamTimer = GameObject.FindGameObjectWithTag("ScreamTimer").GetComponent<RectTransform>();
+        screamTimerMask = screamTimer.GetComponentInChildren<Mask>().GetComponent<Image>();
+        screamTimerTimeRemainingTarget = 0;
+
         mainUI = GameObject.FindGameObjectWithTag("MainUI").GetComponent<RectTransform>();
     }
 
 
     private void Update()
     {
-
-        bool isWalking = p.GetButton(RewiredConsts.Action.WalkForward);
-        bool isTurning = p.GetAxis(RewiredConsts.Action.Turn) != 0;
-
-        animator.SetBool("IsWalking", isWalking);
-
-        if (isWalking)
+        if (GameManager.Instance.playerCanMove)
         {
-            currentSpeedWalk = Mathf.Lerp(currentSpeedWalk, 1, 4 * Time.deltaTime);
-        }
-        else
-        {
-            currentSpeedWalk = Mathf.Lerp(currentSpeedWalk, 0, 7 * Time.deltaTime);
-        }
+            bool isWalking = p.GetButton(RewiredConsts.Action.WalkForward);
+            bool isTurning = p.GetAxis(RewiredConsts.Action.Turn) != 0;
 
-        if (isTurning)
-        {
-            currentSpeedTurn = Mathf.Lerp(currentSpeedTurn, 1 * Mathf.Sign(p.GetAxis(RewiredConsts.Action.Turn)), 3 * Time.deltaTime);
-        }
-        else
-        {
-            currentSpeedTurn = Mathf.Lerp(currentSpeedTurn, 0, 10 * Time.deltaTime);
-        }
+            animator.SetBool("IsWalking", isWalking);
 
-        transform.rotation = (Quaternion.Euler(new Vector3(0f, transform.eulerAngles.y + currentSpeedTurn * 200f * Time.deltaTime, 0f)));
-
-        Vector3 move = transform.forward * currentSpeedWalk * 5f;
-        move += Physics.gravity;
-        cc.Move(move * Time.deltaTime);
-
-        if (targetInteractable != null)
-        {
-            if (p.GetButtonDown(RewiredConsts.Action.Interact))
+            if (isWalking)
             {
-                targetInteractable.Interact();
+                currentSpeedWalk = Mathf.Lerp(currentSpeedWalk, 1, 4 * Time.deltaTime);
+            }
+            else
+            {
+                currentSpeedWalk = Mathf.Lerp(currentSpeedWalk, 0, 7 * Time.deltaTime);
+            }
+
+            if (isTurning)
+            {
+                currentSpeedTurn = Mathf.Lerp(currentSpeedTurn, 1 * Mathf.Sign(p.GetAxis(RewiredConsts.Action.Turn)), 3 * Time.deltaTime);
+            }
+            else
+            {
+                currentSpeedTurn = Mathf.Lerp(currentSpeedTurn, 0, 10 * Time.deltaTime);
+            }
+
+            transform.rotation = (Quaternion.Euler(new Vector3(0f, transform.eulerAngles.y + currentSpeedTurn * 200f * Time.deltaTime, 0f)));
+
+            Vector3 move = transform.forward * currentSpeedWalk * 5f;
+            move += Physics.gravity;
+            cc.Move(move * Time.deltaTime);
+
+            if (targetInteractable != null)
+            {
+                if (p.GetButtonDown(RewiredConsts.Action.Interact))
+                {
+                    targetInteractable.Interact();
+                }
+            }
+
+            if (transform.position.y < -10)
+            {
+                cc.enabled = false;
+                transform.position = sceneStartPosition + Vector3.up * 10;
+                cc.enabled = true;
+
+                GameObject cam;
+                cam = FindObjectOfType<Cinemachine.CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject;
+                //cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().OnTargetObjectWarped(transform, -(pos * 2));
+                cam.GetComponent<Cinemachine.CinemachineVirtualCamera>().PreviousStateIsValid = false;
+            }
+
+            screamTimer.transform.localPosition = WorldToScreenSpace(transform.position + Vector3.up * 3f, Camera.main, mainUI);
+            screamTimerMask.fillAmount = Mathf.MoveTowards(screamTimerMask.fillAmount, screamTimerTimeRemainingTarget, Time.deltaTime / screamTimerTimeMax);
+            if (screamTimerMask.fillAmount < .25f) screamTimerMask.rectTransform.localPosition = new Vector2(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+
+            if (screamTimerMask.fillAmount <= 0)
+            {
+                if (SceneManager.GetActiveScene().name == "Nightmare")
+                {
+                    animator.speed = 0;
+                    GameManager.Instance.playerCanMove = false;
+
+                    deathCam.PlayScene();
+
+                }
             }
         }
+
     }
 
 
@@ -114,6 +160,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "Interactable")
         {
+            float angle = Vector3.Angle(transform.eulerAngles.XZPlane(), other.transform.eulerAngles.XZPlane());
+
             targetInteractable = other.gameObject.GetComponent<Interactable>();
         }
     }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="EventFolder" id="{d1689b18-c0ef-4618-8b3e-82e718386c02}">
+		<property name="name">
+			<value>PIXELDOUGH</value>
+		</property>
+		<relationship name="folder">
+			<destination>{db6ae8ab-e2b0-46fc-9c70-5055c2061af8}</destination>
+		</relationship>
+	</object>
+</objects>

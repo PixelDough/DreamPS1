@@ -298,7 +298,7 @@ PrefabInstance:
     - target: {fileID: 7289800196551991993, guid: d1e4b67a4aa58de44b71da7e77921aba,
         type: 3}
       propertyPath: targetSceneName
-      value: DoorWorld
+      value: Grass
       objectReference: {fileID: 0}
     - target: {fileID: 7443831215349582291, guid: d1e4b67a4aa58de44b71da7e77921aba,
         type: 3}

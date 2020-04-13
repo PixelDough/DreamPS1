@@ -19,7 +19,7 @@ MonoBehaviour:
   m_UpdateMethod: 1
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
+    m_Style: 0
     m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
@@ -88,11 +88,6 @@ PrefabInstance:
     - target: {fileID: 4519450018719916, guid: 3d5d1ed9e2204494b8f6ffe02e4c8e97, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114158257989079230, guid: 3d5d1ed9e2204494b8f6ffe02e4c8e97,
-        type: 3}
-      propertyPath: cfuStatus
-      value: PSXEffects v1.12.2 - update available (click to update).
       objectReference: {fileID: 0}
     - target: {fileID: 114158257989079230, guid: 3d5d1ed9e2204494b8f6ffe02e4c8e97,
         type: 3}

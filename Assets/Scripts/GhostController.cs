@@ -14,6 +14,9 @@ public class GhostController : MonoBehaviour
     [FMODUnity.EventRef]
     public string floatSound;
 
+    [FMODUnity.EventRef]
+    public string attackSound;
+
     public NavMeshAgent agent;
     public Vector3 vectorToPlayer = Vector3.zero;
     Animator animator;
@@ -67,6 +70,18 @@ public class GhostController : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            GameManager.Instance.playerCanMove = false;
+            animator.SetTrigger("Attack");
+            GameManager.Instance.ChangeScenes("Nightmare", "");
+            FMODUnity.RuntimeManager.PlayOneShotAttached(attackSound, gameObject);
+        }
+    }
+
+
     private void StartChase()
     {
         agent.isStopped = false;
@@ -88,6 +103,12 @@ public class GhostController : MonoBehaviour
         }
 
         yield return null;
+    }
+
+
+    public void Attack()
+    {
+
     }
 
 

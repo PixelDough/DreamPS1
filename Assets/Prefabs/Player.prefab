@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8292353249382414114}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 0}
   animator: {fileID: 1411734908452480170}
+  screamTimerTimeRemainingTarget: 0
+  screamTimerTimeMax: 4
   footstepSoundEvent: event:/SFX/FOOTSTEPS/sfx_footstep_base
 --- !u!143 &8292353249382414114
 CharacterController:

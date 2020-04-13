@@ -5,21 +5,17 @@ using UnityEngine;
 public class TempFootstepController : MonoBehaviour
 {
 
-    PlayerController player;
-
-    private string footstepSoundEvent;
+    private SceneAttributes sceneAttributes;
 
     private void Start()
     {
-        player = GetComponentInParent<PlayerController>();
-
-        footstepSoundEvent = player.footstepSoundEvent;
+        sceneAttributes = FindObjectOfType<SceneAttributes>();
     }
 
 
     public void PlayFootstepSound()
     {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(footstepSoundEvent, gameObject);
+        if (sceneAttributes.footstepSound != "") FMODUnity.RuntimeManager.PlayOneShotAttached(sceneAttributes.footstepSound, gameObject);
     }
 
 }

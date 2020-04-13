@@ -169,6 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3819596703826620392}
   - component: {fileID: 3819596703826620393}
+  - component: {fileID: 318554568818690405}
   m_Layer: 0
   m_Name: SceneBase
   m_TagString: Untagged
@@ -219,6 +220,19 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 0
   OverrideMaxDistance: 0
+--- !u!114 &318554568818690405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819596703826620394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02afabdd68672fc4b88e5b00ac40c050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepSound: event:/SFX/FOOTSTEPS/sfx_footstep_base
 --- !u!1 &3819596705488481014
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,8 +402,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3027732790831916755, guid: 46a6effce35cdee46815dcdfd2b99133,
         type: 3}
-      propertyPath: cfuStatus
-      value: PSXEffects v1.12.2 - update available (click to update).
+      propertyPath: postProcessing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3134847084138159809, guid: 46a6effce35cdee46815dcdfd2b99133,
         type: 3}

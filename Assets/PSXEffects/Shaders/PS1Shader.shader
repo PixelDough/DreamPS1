@@ -421,12 +421,12 @@ Shader "PSXEffects/PS1Shader"
 				struct v2f
 				{
 					float4 pos : SV_POSITION;
-					float3 uv : TEXCOORD0;
+					float4 uv : TEXCOORD0;
 					float3 lightDir : TEXCOORD1;
 					float3 normal : TEXCOORD4;
 					fixed4 diff : COLOR;
 					LIGHTING_COORDS(2,3)
-					float2 uv1 : TEXCOORD11;
+					float4 uv1 : TEXCOORD11;
 				};
 
 				v2f vert(appdata_tan v) {
@@ -452,17 +452,24 @@ Shader "PSXEffects/PS1Shader"
 						o.pos = PixelSnap(o.pos);
 					}
 
-					o.diff.a = 1;
+					o.diff.a = (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance && _DrawDistance > 0);
 
-					if (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance && _DrawDistance > 0) {
-						o.diff.a = 0;
-					}
-
+					// Set UV outputs
 					float wVal = mul(UNITY_MATRIX_P, o.pos).z;
 					if(_AffineMapping)
-						o.uv = float3(v.texcoord.xy * wVal, wVal);
+						o.uv = float4(v.texcoord.xy * wVal, wVal, 0);
 					else
-						o.uv = v.texcoord;
+						o.uv = float4(v.texcoord.xyz, 0);
+
+					// Currently no difference from non-affine mapping
+					#ifdef LIGHTMAP_ON
+					if (_AffineMapping)
+						o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, wVal, 0);
+					else
+						o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, 0, 0);
+					#endif
+
+					o.uv.a = (distance(worldPos, _WorldSpaceCameraPos) > _LODAmt && _LODAmt > 0);
 
 					#ifdef LIGHTMAP_ON
 					o.uv1 = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
@@ -479,13 +486,15 @@ Shader "PSXEffects/PS1Shader"
 
 				fixed4 frag(v2f i) : COLOR
 				{
-					float2 adjUv = i.uv.xy;
-					if (_AffineMapping)
-						adjUv = (i.uv / i.uv.z + _MainTex_ST.zw) * _MainTex_ST.xy;
-					else
-						adjUv = (i.uv + _MainTex_ST.zw) * _MainTex_ST.xy;
-					fixed4 tex = tex2D(_MainTex, adjUv);
-					if (i.diff.a == 0 && _DrawDist == 1.0 || (_RenderMode == 2.0 && tex.a == 0)) {
+					float2 adjUv = PerformAffineMapping(i.uv, _MainTex_ST, _AffineMapping);
+					float2 adjUV1 = PerformAffineMapping(i.uv1, unity_LightmapST, _AffineMapping);
+					fixed4 albedo = tex2D(_MainTex, adjUv);
+					// Lerp between main texture and LOD texture depending on LOD distance
+					float4 lod = tex2D(_LODTex, adjUv);
+					if (i.uv.a && lod.r + lod.g + lod.b < 3.0)
+						albedo = lod;
+					if (i.diff.a && _DrawDist == 1.0 || (_RenderMode == 2.0 && albedo.a == 0)) {
+						// Don't draw if outside render distance
 						clip(-1);
 					}
 
@@ -497,20 +506,16 @@ Shader "PSXEffects/PS1Shader"
 						i.lightDir = normalize(_WorldSpaceLightPos0.xyz);
 					}
 
-					tex *= _Color;
+					albedo *= _Color;
 
 					fixed diff = saturate(dot(normalize(i.normal), i.lightDir));
 
 					fixed4 col;
-					col.rgb = (tex.rgb * _LightColor0.rgb * diff);
-					if (_ShadowType == 0)
-						col.rgb *= atten;
-					else
-						col.rgb -= 1 - atten * 2;
+					col.rgb = (albedo.rgb * _LightColor0.rgb * diff) * (atten * 2);
 					#ifdef LIGHTMAP_ON
 					col.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv1));
 					#endif
-					col.a = tex.a;
+					col.a = albedo.a;
 					return col;
 				}
 

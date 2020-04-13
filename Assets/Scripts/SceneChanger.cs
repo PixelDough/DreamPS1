@@ -20,6 +20,7 @@ public class SceneChanger : MonoBehaviour
 
     private IEnumerator _ChangeScenes()
     {
+        GameManager.Instance.playerCanMove = false;
 
         LTDescr tweenIn = LeanTween.alphaCanvas(loadScreen, 1, 1f);
 
@@ -42,6 +43,8 @@ public class SceneChanger : MonoBehaviour
         }
 
         Destroy(gameObject);
+
+        GameManager.Instance.playerCanMove = true;
 
         yield return null;
     }

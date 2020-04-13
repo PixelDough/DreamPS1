@@ -111,7 +111,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactSoundEvent: event:/SFX/DOORS/sfx_door_open
+  lockedSoundEvent: event:/SFX/DOORS/sfx_door_locked
   targetSceneName: 
+  lockObject: {fileID: 6488113462241753435}
   isUnlocked: 1
 --- !u!1 &7418085723693870642
 GameObject:
@@ -229,6 +231,12 @@ PrefabInstance:
 --- !u!4 &6783823915806848146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: edcdfec1065b022409667e3ef0cdb064,
+    type: 3}
+  m_PrefabInstance: {fileID: 1972100712568381320}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6488113462241753435 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4707431455586232019, guid: edcdfec1065b022409667e3ef0cdb064,
     type: 3}
   m_PrefabInstance: {fileID: 1972100712568381320}
   m_PrefabAsset: {fileID: 0}

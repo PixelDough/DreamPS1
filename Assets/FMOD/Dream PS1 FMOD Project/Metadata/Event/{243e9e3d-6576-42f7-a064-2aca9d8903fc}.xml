@@ -5,7 +5,7 @@
 			<value>sfx_ghost_scream</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{5d5ea0b8-aaab-4c4a-8b9a-7eb56f322bd2}</destination>
@@ -119,6 +119,7 @@
 	<object class="MixerBusEffectChain" id="{b5f8b0d7-2dd1-4d5d-a833-c8648374ecd7}">
 		<relationship name="effects">
 			<destination>{7d37154b-8076-4895-a13a-f4a8a856adca}</destination>
+			<destination>{6c81c67a-5eee-4d89-8a4e-004e9a970cbf}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{462120b1-38c7-47f6-946d-95e7fad6c785}" />
@@ -130,5 +131,10 @@
 	</object>
 	<object class="MixerBusPanner" id="{fc49bef6-28a7-4b69-8dfd-4485f3dbb401}" />
 	<object class="MixerBusFader" id="{7d37154b-8076-4895-a13a-f4a8a856adca}" />
+	<object class="SpatialiserEffect" id="{6c81c67a-5eee-4d89-8a4e-004e9a970cbf}">
+		<property name="maximumDistance">
+			<value>200</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{abe7525f-514b-42b2-893a-ac2d139218c7}" />
 </objects>

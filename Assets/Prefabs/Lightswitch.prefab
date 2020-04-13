@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 610865683962378300}
   - component: {fileID: 610865683962378303}
   - component: {fileID: 5130631678169350832}
+  - component: {fileID: 552754239977920967}
   m_Layer: 0
   m_Name: Lightswitch
   m_TagString: Untagged
@@ -61,6 +62,22 @@ MonoBehaviour:
   interactSoundEvent: event:/SFX/LIGHT SWITCH/sfx_lightswitch_toggle
   lightStateParameter: LightState
   roomLight: {fileID: 0}
+--- !u!114 &552754239977920967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610865683962378302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  parameter: LightState
+  TriggerEvent: 11
+  value: 1
 --- !u!1001 &610865684335943723
 PrefabInstance:
   m_ObjectHideFlags: 0
