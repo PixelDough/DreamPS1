@@ -10,7 +10,7 @@ Material:
   m_Name: Mat_ShadowMan_Particle
   m_Shader: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: BFC ETC1_EXTERNAL_ALPHA TRANSPARENT _ALPHABLEND_ON _COLORADDSUBDIFF_ON
-    _DIFFMODEL_VERTEX _DRAWDIST_ON _FADING_ON _SPECMODEL_GOURAUD
+    _DIFFMODEL_VERTEX _DRAWDIST_ON _SPECMODEL_GOURAUD
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -85,7 +85,7 @@ Material:
     m_Floats:
     - _BlendOp: 2
     - _BumpScale: 1
-    - _CameraFadingEnabled: 1
+    - _CameraFadingEnabled: 0
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
     - _ColorMode: 1
@@ -115,7 +115,7 @@ Material:
     - _RenderMode: 1
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 1
+    - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 0
     - _SoftParticlesNearFadeDistance: 61.26
     - _SpecModel: 0
@@ -127,8 +127,8 @@ Material:
     - _VertexInaccuracy: -1
     - _ZWrite: 0
     m_Colors:
-    - _CameraFadeParams: {r: 1, g: 1, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0.15223171, g: 0.9433962, b: 0.031149892, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _SoftParticleFadeParams: {r: 61.26, g: -0.016323866, b: 0, a: 0}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}

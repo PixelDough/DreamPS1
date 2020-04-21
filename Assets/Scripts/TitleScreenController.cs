@@ -14,7 +14,7 @@ public class TitleScreenController : MonoBehaviour
 
     private void Start()
     {
-        title.transform.LeanMoveLocal(new Vector3(0f, 0f, 10f), 1.5f).setEaseOutElastic();
+        //title.transform.LeanMoveLocal(new Vector3(0f, 0f, 10f), 1.5f).setEaseOutElastic();
 
         playerAnimator.SetBool("IsWalking", true);
         ghostAnimator.Play("Chase");
@@ -27,7 +27,7 @@ public class TitleScreenController : MonoBehaviour
     {
         if (p.GetButtonDown(RewiredConsts.Action.Start))
         {
-            GameManager.Instance.ChangeScenes("Bedroom", "");
+            GameManager.Instance.ChangeScenes("MainMenu", "");
         }
     }
 

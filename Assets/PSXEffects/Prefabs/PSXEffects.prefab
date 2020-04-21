@@ -98,29 +98,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.12.2 - update available (click to update).
   sections: 01010100
-  customRes: {x: 620, y: 480}
+  customRes: {x: 480, y: 336}
   resolutionFactor: 2
   limitFramerate: 60
   affineMapping: 1
   polygonalDrawDistance: 0
   vertexInaccuracy: 40
   polygonInaccuracy: 2
-  colorDepth: 24
+  colorDepth: 10
   scanlines: 0
   scanlineIntensity: 5
   ditherTexture: {fileID: 2800000, guid: 79b0fc6d8c2fcd54b84b49a2a2ebe7d8, type: 3}
   dithering: 1
   ditherThreshold: 1
-  ditherIntensity: 2
-  maxDarkness: 20
+  ditherIntensity: 40
+  maxDarkness: 0
   subtractFade: 0
-  favorRed: 1
-  worldSpaceSnapping: 1
+  favorRed: 0
+  worldSpaceSnapping: 0
   postProcessing: 1
   verticalScanlines: 1
   shadowIntensity: 0.5
   downscale: 0
   snapCamera: 0
   camInaccuracy: 0.05
-  camSnapping: 0
+  camSnapping: 1
   shadowType: 0

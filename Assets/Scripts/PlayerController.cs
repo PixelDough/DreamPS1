@@ -65,6 +65,14 @@ public class PlayerController : MonoBehaviour
         screamTimerTimeRemainingTarget = 0;
 
         mainUI = GameObject.FindGameObjectWithTag("MainUI").GetComponent<RectTransform>();
+
+        if (ES3.FileExists())
+        {
+            if (ES3.Load<string>("playerScene") == SceneManager.GetActiveScene().name)
+            {
+                transform.position = ES3.Load<Vector3>("playerPosition");
+            }
+        }
     }
 
 
@@ -136,6 +144,12 @@ public class PlayerController : MonoBehaviour
 
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ES3.Save<Vector3>("playerPosition", transform.position);
+            ES3.Save<string>("playerScene", SceneManager.GetActiveScene().name);
         }
 
     }

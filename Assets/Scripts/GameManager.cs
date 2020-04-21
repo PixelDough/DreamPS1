@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
         transform.parent = null;
         //DontDestroyOnLoad(gameObject);
 
-        Cursor.visible = false;
+        //Cursor.visible = false;
     }
 
     private void Update()
@@ -39,6 +39,16 @@ public class GameManager : Singleton<GameManager>
         sceneChangeScript.doorName = _doorName;
         doorName = _doorName;
 
+    }
+
+    public void ChangeScenes(string _sceneName)
+    {
+        ChangeScenes(_sceneName, "");
+    }
+
+    public void OpenDiscord()
+    {
+        Application.OpenURL("https://discord.gg/Uu76BsZ");
     }
 
 }

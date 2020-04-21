@@ -18,9 +18,9 @@ RenderSettings:
   m_FogColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_FogMode: 1
   m_FogDensity: 0
-  m_LinearFogStart: 15
-  m_LinearFogEnd: 25
-  m_AmbientSkyColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+  m_LinearFogStart: 25
+  m_LinearFogEnd: 35
+  m_AmbientSkyColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: b44b39372bf9bc44290172cb43a6a8eb,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -150,7 +151,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.7
+  m_Intensity: 1.5
   m_Range: 50
   m_SpotAngle: 172.8
   m_InnerSpotAngle: 21.80208
@@ -192,7 +193,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -349,25 +350,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhiteFade
       objectReference: {fileID: 0}
-    - target: {fileID: 3788790230029564656, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
-        type: 3}
-      propertyPath: cfuStatus
-      value: PSXEffects v1.12.2 - update available (click to update).
-      objectReference: {fileID: 0}
-    - target: {fileID: 3788790230029564656, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
-        type: 3}
-      propertyPath: shadowType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3819596703677177634, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.796341
+      value: 9.423743
       objectReference: {fileID: 0}
     - target: {fileID: 3819596703677177634, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.932724
+      value: -15.690743
       objectReference: {fileID: 0}
     - target: {fileID: 3819596703677177634, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}
@@ -477,12 +468,12 @@ PrefabInstance:
     - target: {fileID: 3824084524435636962, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.796341
+      value: 9.423743
       objectReference: {fileID: 0}
     - target: {fileID: 3824084524435636962, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.932724
+      value: -15.690743
       objectReference: {fileID: 0}
     - target: {fileID: 3824084524435636962, guid: 94a41aa4e0f4f6f4fbce8bfdc619a0b4,
         type: 3}

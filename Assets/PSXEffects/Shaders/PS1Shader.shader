@@ -45,7 +45,7 @@ Shader "PSXEffects/PS1Shader"
 				Tags { "LightMode" = "ForwardBase" }
 				CGPROGRAM
 
-				
+
 
 				float _Transparent;
 
@@ -120,7 +120,7 @@ Shader "PSXEffects/PS1Shader"
 
 					// Set UV outputs
 					float wVal = mul(UNITY_MATRIX_P, o.pos).z;
-					if(_AffineMapping)
+					if (_AffineMapping)
 						o.uv = float4(v.texcoord.xy * wVal, wVal, 0);
 					else
 						o.uv = float4(v.texcoord.xyz, 0);
@@ -133,14 +133,14 @@ Shader "PSXEffects/PS1Shader"
 						o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, 0, 0);
 					#endif
 
-					
+
 
 					float3 worldNormal = UnityObjectToWorldNormal(v.normal);
-					
+
 					// Set cutoff value for vertex render distance
-					o.diff.a = (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance && _DrawDistance > 0);
+					o.diff.a = (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance&& _DrawDistance > 0);
 					// Set value for LOD distance
-					o.uv.a = (distance(worldPos, _WorldSpaceCameraPos) > _LODAmt && _LODAmt > 0);
+					o.uv.a = (distance(worldPos, _WorldSpaceCameraPos) > _LODAmt&& _LODAmt > 0);
 
 					// Various outputs needed for fragment
 					o.color = v.color;
@@ -190,7 +190,7 @@ Shader "PSXEffects/PS1Shader"
 					}
 					#endif
 
-					
+
 
 					o.lightDir = lightDir;
 
@@ -223,6 +223,10 @@ Shader "PSXEffects/PS1Shader"
 						albedo = lod;
 					float4 col = float4(1,1,1,1);
 
+					#if !UNITY_COLORSPACE_GAMMA
+						albedo.rgb = LinearToGammaSpace(albedo.rgb);
+					#endif
+
 					if (!_Unlit) {
 						// Normals
 						float3 tangentNormal = tex2D(_NormalMap, adjUv).xyz;
@@ -234,6 +238,9 @@ Shader "PSXEffects/PS1Shader"
 						// Calculate metal/smoothness map
 						float3 reflectedDir = reflect(i.viewDir, normalize(i.normalDir));
 						float4 metalMap = tex2D(_MetalMap, adjUv);
+						#if !UNITY_COLORSPACE_GAMMA
+							metalMap.rgb = LinearToGammaSpace(metalMap.rgb);
+						#endif
 						UnityIndirect indirectLight;
 						indirectLight.diffuse = max(0, ShadeSH9(half4(i.normal, 1)));
 						indirectLight.specular = 0;
@@ -250,55 +257,80 @@ Shader "PSXEffects/PS1Shader"
 						if (_DiffModel == 1) {
 							float nl = (max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz)));
 							diffuse.rgb = nl * _LightColor0;
-							diffuse.rgb += ShadeSH9(half4(worldNormal, 1));
-							diffuse.rgb += i.diff.rgb;
-						} else {
-							diffuse.rgb = i.diff.rgb;
+							#if UNITY_COLORSPACE_GAMMA
+								diffuse.rgb += ShadeSH9(half4(worldNormal, 1));
+								diffuse.rgb += i.diff.rgb;
+							#else
+								diffuse.rgb += LinearToGammaSpace(ShadeSH9(half4(worldNormal, 1)));
+								diffuse.rgb += LinearToGammaSpace(i.diff.rgb);
+							#endif
 						}
-						#endif
-						diffuse.rgb *= albedo.rgb;
+ else {
+  #if UNITY_COLORSPACE_GAMMA
+	  diffuse.rgb = i.diff.rgb;
+  #else
+	  diffuse.rgb = LinearToGammaSpace(i.diff.rgb);
+  #endif
+}
+#endif
+diffuse.rgb *= albedo.rgb;
 
-						// Phong specular model
-						float3 specular = i.spec;
-						if (diffuse.r > 0 && _SpecModel) {
-							if (_WorldSpaceLightPos0.w == 0.0) {
-								lightDir = normalize(_WorldSpaceLightPos0.xyz);
-							}
-							else {
-								float3 vertToLight = _WorldSpaceLightPos0.xyz - mul(unity_ObjectToWorld, i.pos).xyz;
-								lightDir = normalize(vertToLight);
-							}
 
-							float3 reflection = reflect(lightDir, worldNormal);
-							float3 viewDir = normalize(i.viewDir);
-							specular = pow(saturate(dot(reflection, -viewDir)), 20.0f);
-						}
-						float4 specularIntensity = tex2D(_SpecularMap, adjUv) * _Specular;
-						specular *= specularIntensity;
+// Phong specular model
+float3 specular = i.spec;
+if (diffuse.r > 0 && _SpecModel) {
+	if (_WorldSpaceLightPos0.w == 0.0) {
+		lightDir = normalize(_WorldSpaceLightPos0.xyz);
+	}
+	else {
+		float3 vertToLight = _WorldSpaceLightPos0.xyz - mul(unity_ObjectToWorld, i.pos).xyz;
+		lightDir = normalize(vertToLight);
+	}
 
-						// Apply lighting calculations from above
-						col.rgb = diffuse.rgb;
-						col.rgb *= (indirectLight.diffuse + indirectLight.specular) * _Metallic * metalMap.r;
-						col.rgb += diffuse * (1 - _Metallic);
-						#ifdef LIGHTMAP_ON
-						col.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv1)) + 0.6 * UNITY_LIGHTMODEL_AMBIENT;
-						#endif
-						// Add cubemap to output color
-						col.rgb += texCUBE(_Cube, reflectedDir) / 2 - 0.25;
-						// Tint material
-						col *= i.color * _Color;
-						col.rgb += specular;
-						col.a = albedo.a * i.color.a * _Color.a;
-						// Darken darks
-						col.rgb -= max(0, (1 - diffuse.rgb) * i.color) * _DarkMax;
-						// Emission map
-						col.rgb += tex2D(_Emission, adjUv) * _EmissionAmt;
-						// Lighting/shadows
-						if(_ShadowType == 0)
-							col.rgb *= LIGHT_ATTENUATION(i);
-						else
-							col.rgb -= 1-LIGHT_ATTENUATION(i);
-					} else {
+	float3 reflection = reflect(lightDir, worldNormal);
+	float3 viewDir = normalize(i.viewDir);
+	specular = pow(saturate(dot(reflection, -viewDir)), 20.0f);
+}
+float4 specularIntensity;
+#if UNITY_COLORSPACE_GAMMA
+	specularIntensity.rgb = tex2D(_SpecularMap, adjUv) * _Specular;
+#else
+	specularIntensity.rgb = LinearToGammaSpace(tex2D(_SpecularMap, adjUv)) * _Specular;
+#endif
+specular *= specularIntensity;
+
+// Apply lighting calculations from above
+col.rgb = diffuse.rgb;
+col.rgb *= (indirectLight.diffuse + indirectLight.specular) * _Metallic * metalMap.r;
+col.rgb += diffuse * (1 - _Metallic);
+#ifdef LIGHTMAP_ON
+	col.rgb *= LinearToGammaSpace(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv1))) + 0.6 * UNITY_LIGHTMODEL_AMBIENT;
+#endif
+	// Add cubemap to output color
+	#if UNITY_COLORSPACE_GAMMA
+		col.rgb += texCUBE(_Cube, reflectedDir) / 2 - 0.25;
+	#else
+		col.rgb += LinearToGammaSpace(texCUBE(_Cube, reflectedDir)) / 2 - 0.25;
+	#endif
+		// Tint material
+		col *= i.color * _Color;
+		col.rgb += specular;
+		col.a = albedo.a * i.color.a * _Color.a;
+		// Darken darks
+		col.rgb -= max(0, (1 - diffuse.rgb) * i.color) * _DarkMax;
+		// Emission map
+		#if UNITY_COLORSPACE_GAMMA
+			col.rgb += tex2D(_Emission, adjUv) * _EmissionAmt;
+		#else
+			col.rgb += LinearToGammaSpace(tex2D(_Emission, adjUv)) * _EmissionAmt;
+		#endif
+			// Lighting/shadows
+			if (_ShadowType == 0)
+				col.rgb *= LIGHT_ATTENUATION(i);
+			else
+				col.rgb -= 1 - LIGHT_ATTENUATION(i);
+		}
+else {
 						// If material is unlit, just set color to albedo
 						col.rgb = albedo;
 						// Tint material
@@ -310,6 +342,10 @@ Shader "PSXEffects/PS1Shader"
 						// Don't draw if outside render distance
 						clip(-1);
 					}
+
+					#if !UNITY_COLORSPACE_GAMMA
+						col.rgb = GammaToLinearSpace(col.rgb);
+					#endif
 
 					UNITY_APPLY_FOG(i.fogCoord, col.rgb);
 
@@ -375,11 +411,11 @@ Shader "PSXEffects/PS1Shader"
 
 					TRANSFER_SHADOW_CASTER_NORMALOFFSET(o);
 					float wVal = mul(UNITY_MATRIX_P, v.vertex).z;
-					if(_AffineMapping)
+					if (_AffineMapping)
 						o.uv = float3(v.texcoord.xy * wVal, wVal);
 					else
 						o.uv = v.texcoord;
-					
+
 					return o;
 				}
 
@@ -402,126 +438,141 @@ Shader "PSXEffects/PS1Shader"
 				ENDCG
 			}
 
-			// Pass for extra lights
-			// Most of the code here is from the first pass
-			Pass
-			{
-				Tags { "LightMode" = "ForwardAdd" }
-				Blend One One
-				CGPROGRAM
+					// Pass for extra lights
+					// Most of the code here is from the first pass
+					Pass
+					{
+						Tags { "LightMode" = "ForwardAdd" }
+						Blend One One
+						CGPROGRAM
 
-				#pragma vertex vert
-				#pragma fragment frag
-				#pragma multi_compile_fwdadd_fullshadows
+						#pragma vertex vert
+						#pragma fragment frag
+						#pragma multi_compile_fwdadd_fullshadows
 
-				#include "UnityCG.cginc"
-				#include "AutoLight.cginc"
-				#include "PSXEffects.cginc"
+						#include "UnityCG.cginc"
+						#include "AutoLight.cginc"
+						#include "PSXEffects.cginc"
 
-				struct v2f
-				{
-					float4 pos : SV_POSITION;
-					float4 uv : TEXCOORD0;
-					float3 lightDir : TEXCOORD1;
-					float3 normal : TEXCOORD4;
-					fixed4 diff : COLOR;
-					LIGHTING_COORDS(2,3)
-					float4 uv1 : TEXCOORD11;
-				};
+						struct v2f
+						{
+							float4 pos : SV_POSITION;
+							float4 uv : TEXCOORD0;
+							float3 lightDir : TEXCOORD1;
+							float3 normal : TEXCOORD4;
+							fixed4 diff : COLOR;
+							LIGHTING_COORDS(2,3)
+							float4 uv1 : TEXCOORD11;
+						};
 
-				v2f vert(appdata_tan v) {
-					v2f o;
+						v2f vert(appdata_tan v) {
+							v2f o;
 
-					float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
-					float3 viewDir = mul((float3x3)unity_CameraToWorld, float3(0, 0, 1));
-					worldPos.xyz += _WorldSpaceCameraPos.xyz * _CamPos;
-					worldPos.xyz += viewDir * 100 * _CamPos;
-					if (_VertexInaccuracy < 0) _VertexInaccuracy = _VertexSnappingDetail;
-					if (_WorldSpace == 1) {
-						_VertexInaccuracy /= 2048;
-						worldPos.xyz /= _VertexInaccuracy;
-						worldPos.xyz = round(worldPos.xyz);
-						worldPos.xyz *= _VertexInaccuracy;
-						worldPos.xyz -= _WorldSpaceCameraPos.xyz * _CamPos;
-						worldPos.xyz -= viewDir * 100 * _CamPos;
-						v.vertex = mul(unity_WorldToObject, worldPos);
-						o.pos = UnityObjectToClipPos(v.vertex);
+							float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+							float3 viewDir = mul((float3x3)unity_CameraToWorld, float3(0, 0, 1));
+							worldPos.xyz += _WorldSpaceCameraPos.xyz * _CamPos;
+							worldPos.xyz += viewDir * 100 * _CamPos;
+							if (_VertexInaccuracy < 0) _VertexInaccuracy = _VertexSnappingDetail;
+							if (_WorldSpace == 1) {
+								_VertexInaccuracy /= 2048;
+								worldPos.xyz /= _VertexInaccuracy;
+								worldPos.xyz = round(worldPos.xyz);
+								worldPos.xyz *= _VertexInaccuracy;
+								worldPos.xyz -= _WorldSpaceCameraPos.xyz * _CamPos;
+								worldPos.xyz -= viewDir * 100 * _CamPos;
+								v.vertex = mul(unity_WorldToObject, worldPos);
+								o.pos = UnityObjectToClipPos(v.vertex);
+							}
+							else {
+								o.pos = UnityObjectToClipPos(v.vertex);
+								o.pos = PixelSnap(o.pos);
+							}
+
+							o.diff.a = (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance&& _DrawDistance > 0);
+
+							// Set UV outputs
+							float wVal = mul(UNITY_MATRIX_P, o.pos).z;
+							if (_AffineMapping)
+								o.uv = float4(v.texcoord.xy * wVal, wVal, 0);
+							else
+								o.uv = float4(v.texcoord.xyz, 0);
+
+							// Currently no difference from non-affine mapping
+							#ifdef LIGHTMAP_ON
+							if (_AffineMapping)
+								o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, wVal, 0);
+							else
+								o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, 0, 0);
+							#endif
+
+							o.uv.a = (distance(worldPos, _WorldSpaceCameraPos) > _LODAmt&& _LODAmt > 0);
+
+							#ifdef LIGHTMAP_ON
+							o.uv1 = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+							#endif
+
+							o.lightDir = ObjSpaceLightDir(v.vertex);
+
+							o.normal = v.normal;
+							TRANSFER_VERTEX_TO_FRAGMENT(o);
+							return o;
+						}
+
+						fixed4 _LightColor0;
+
+						fixed4 frag(v2f i) : COLOR
+						{
+							float2 adjUv = PerformAffineMapping(i.uv, _MainTex_ST, _AffineMapping);
+							float2 adjUV1 = PerformAffineMapping(i.uv1, unity_LightmapST, _AffineMapping);
+							fixed4 albedo = tex2D(_MainTex, adjUv);
+							// Lerp between main texture and LOD texture depending on LOD distance
+							float4 lod = tex2D(_LODTex, adjUv);
+							if (i.uv.a && lod.r + lod.g + lod.b < 3.0)
+								albedo = lod;
+							if (i.diff.a && _DrawDist == 1.0 || (_RenderMode == 2.0 && albedo.a == 0)) {
+								// Don't draw if outside render distance
+								clip(-1);
+							}
+
+							#if !UNITY_COLORSPACE_GAMMA
+								albedo.rgb = LinearToGammaSpace(albedo.rgb);
+							#endif
+
+							i.lightDir = normalize(i.lightDir);
+
+							fixed atten = LIGHT_ATTENUATION(i);
+							if (0.0 == _WorldSpaceLightPos0.w) {
+								atten = 1.0;
+								i.lightDir = normalize(_WorldSpaceLightPos0.xyz);
+							}
+
+							albedo *= _Color;
+
+							fixed4 col;
+							fixed diff = saturate(dot(normalize(i.normal), i.lightDir));
+							#if !UNITY_COLORSPACE_GAMMA
+								col.rgb = LinearToGammaSpace((albedo.rgb * _LightColor0.rgb * diff) * (atten * 2) / unity_ColorSpaceDouble);
+							#else
+								col.rgb = (albedo.rgb * _LightColor0.rgb * diff) * (atten * 2);
+							#endif
+
+							#ifdef LIGHTMAP_ON
+							col.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv1));
+							#endif
+							col.a = albedo.a;
+
+							#if !UNITY_COLORSPACE_GAMMA
+								col.rgb = GammaToLinearSpace(col.rgb);
+							#endif
+
+							UNITY_APPLY_FOG(i.fogCoord, col.rgb);
+
+							return col;
+						}
+
+						ENDCG
 					}
-					else {
-						o.pos = UnityObjectToClipPos(v.vertex);
-						o.pos = PixelSnap(o.pos);
-					}
-
-					o.diff.a = (distance(worldPos, _WorldSpaceCameraPos) > _DrawDistance && _DrawDistance > 0);
-
-					// Set UV outputs
-					float wVal = mul(UNITY_MATRIX_P, o.pos).z;
-					if(_AffineMapping)
-						o.uv = float4(v.texcoord.xy * wVal, wVal, 0);
-					else
-						o.uv = float4(v.texcoord.xyz, 0);
-
-					// Currently no difference from non-affine mapping
-					#ifdef LIGHTMAP_ON
-					if (_AffineMapping)
-						o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, wVal, 0);
-					else
-						o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, 0, 0);
-					#endif
-
-					o.uv.a = (distance(worldPos, _WorldSpaceCameraPos) > _LODAmt && _LODAmt > 0);
-
-					#ifdef LIGHTMAP_ON
-					o.uv1 = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-					#endif
-
-					o.lightDir = ObjSpaceLightDir(v.vertex);
-
-					o.normal = v.normal;
-					TRANSFER_VERTEX_TO_FRAGMENT(o);
-					return o;
-				}
-
-				fixed4 _LightColor0;
-
-				fixed4 frag(v2f i) : COLOR
-				{
-					float2 adjUv = PerformAffineMapping(i.uv, _MainTex_ST, _AffineMapping);
-					float2 adjUV1 = PerformAffineMapping(i.uv1, unity_LightmapST, _AffineMapping);
-					fixed4 albedo = tex2D(_MainTex, adjUv);
-					// Lerp between main texture and LOD texture depending on LOD distance
-					float4 lod = tex2D(_LODTex, adjUv);
-					if (i.uv.a && lod.r + lod.g + lod.b < 3.0)
-						albedo = lod;
-					if (i.diff.a && _DrawDist == 1.0 || (_RenderMode == 2.0 && albedo.a == 0)) {
-						// Don't draw if outside render distance
-						clip(-1);
-					}
-
-					i.lightDir = normalize(i.lightDir);
-
-					fixed atten = LIGHT_ATTENUATION(i);
-					if (0.0 == _WorldSpaceLightPos0.w) {
-						atten = 1.0;
-						i.lightDir = normalize(_WorldSpaceLightPos0.xyz);
-					}
-
-					albedo *= _Color;
-
-					fixed diff = saturate(dot(normalize(i.normal), i.lightDir));
-
-					fixed4 col;
-					col.rgb = (albedo.rgb * _LightColor0.rgb * diff) * (atten * 2);
-					#ifdef LIGHTMAP_ON
-					col.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv1));
-					#endif
-					col.a = albedo.a;
-					return col;
-				}
-
-				ENDCG
-			}
 		}
-		CustomEditor "PS1ShaderEditor"
-		Fallback "VertexLit"
+			CustomEditor "PS1ShaderEditor"
+							Fallback "VertexLit"
 }

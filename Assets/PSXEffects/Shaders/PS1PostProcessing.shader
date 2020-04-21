@@ -1,4 +1,4 @@
-﻿Shader "Hidden/PS1ColorDepth"
+Shader "Hidden/PS1ColorDepth"
 {
 	Properties
 	{
@@ -59,6 +59,9 @@
 			{
 				float aspect = _ResY / _ResX;
 				fixed4 col = tex2D(_MainTex, i.uv);
+				#if !UNITY_COLORSPACE_GAMMA
+				col.rgb = LinearToGammaSpace(col.rgb);
+				#endif
 				int colors = pow(2, _ColorDepth);
 				
 				//Scanlines
@@ -77,11 +80,20 @@
 
 				//Manipulate colors/saturate
 				col.rgb -= (3 - col.rgb) * _SubtractFade;
-				col.rgb -= _FavorRed * ((1 - col.rgb) * 0.25);
-				col.r += _FavorRed * ((0.5 - col.rgb) * 0.1);
+				#if UNITY_COLORSPACE_GAMMA
+					col.rgb -= _FavorRed * ((1 - col.rgb) * 0.25);
+					col.r += _FavorRed * ((0.5 - col.rgb) * 0.1);
+				#else
+					col.rgb -= GammaToLinearSpace(_FavorRed * ((1 - col.rgb) * 0.25));
+					col.r += GammaToLinearSpace(_FavorRed * ((0.5 - col.rgb) * 0.1));
+				#endif
 
 				col.rgb *= 1.0f + (luma < dither ? (1 - luma) * (1 - (_ColorDepth / 24)) * _DitherIntensity : 0) * _Dithering;
 				col.rgb = floor(col.rgb * colors) / colors;
+
+				#if !UNITY_COLORSPACE_GAMMA
+					col.rgb = GammaToLinearSpace(col.rgb);
+				#endif
 
 				return col;
 			}

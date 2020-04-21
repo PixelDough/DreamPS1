@@ -3,7 +3,12 @@ guid: c441b05333b3cda4aa20d7bae5f090f6
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mat_PixelDoughLogo
+    second: {fileID: 2100000, guid: 9661be9c3dbd44b4292186b1cd588bbf, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
